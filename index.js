@@ -32,7 +32,7 @@ server.connection({
 
 //----DataBase Connection----
     var mongoose = require("mongoose");
-    var url = 'mongodb://localhost:27017/users';
+    var url = 'mongodb://localhost:27017/places';
     mongoose.connect(url);
     var db = mongoose.connection;
     db.on('error', console.error.bind(console, 'connection error'));
@@ -57,6 +57,8 @@ mongoose.Promise = require('bluebird');
 
         //---Routes----
         server.route(require('./Routes/UserRoutes'));
+        server.route(require('./Routes/categories'));
+        server.route(require('./Routes/Places'));
 
     });
 //----END-----
