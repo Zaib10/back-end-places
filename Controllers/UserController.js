@@ -50,7 +50,7 @@ controller.login = (request, reply) => {
                 }).code(401)
             }
             else if (Bcrypt.compareSync(password, userFind.password)) {
-                let token = jwt.sign({ email: userFind.email,role : userFind.role }, Config.jwt.securityCode, { algorithm: 'HS256' });
+                let token = jwt.sign({ email: userFind.email, role : userFind.role, _id: userFind._id }, Config.jwt.securityCode, { algorithm: 'HS256' });
                 reply(
                     {
                         data: {

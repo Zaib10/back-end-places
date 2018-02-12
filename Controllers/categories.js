@@ -1,4 +1,6 @@
 const Category = require('../Models/Categories');
+const Places = require('../Models/Places');
+
 const controller = {};
 
 //----create category-----
@@ -59,6 +61,7 @@ controller.getAll = (request, reply) => {
             })
         })
         .catch((err) => {
+            console.log(err)
             reply(err)
         })
 

@@ -1,14 +1,26 @@
 
-
+const User = require('./Models/UserSchema');
 var validate = function (decoded, req, callback) {
       
-      if (decoded.role === 'Admin') {
-            return callback(null, true, {scope: 'Admin'}); // They're an `admin`
-        }
-        if (decoded.role === 'User') {
-            return callback(null, true, {scope: 'User'}); // They're a `user`
-        }
-        return callback(null, false);
+      
+    //find user by id (decoded._id)
+    User
+        .findById(decoded._id)
+        .then(user => {
+            console.log(user)
+            if (!user )//|| (user && user.status != 'ACTIVE')
+             {
+                return callback('User not active or not found', false);
+            }
+
+            return callback(null, true, {scope: decoded.role}); // They're a `user`
+        })
+        .catch(err => {
+            console.log(err)
+            return callback(err);
+        })
+
+    
     
 
 
