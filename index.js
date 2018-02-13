@@ -7,7 +7,7 @@ const jwt = require('jsonwebtoken');
 const validate = require('./Authentication');
 //---Server Connection-----
 server.connection({
-    port: "2000",
+    port: "2002",
     host: "0.0.0.0",
     routes: {
         cors: {

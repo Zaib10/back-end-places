@@ -7,7 +7,7 @@ var validate = function (decoded, req, callback) {
     User
         .findById(decoded._id)
         .then(user => {
-            console.log(user)
+            //console.log(user)
             if (!user )//|| (user && user.status != 'ACTIVE')
              {
                 return callback('User not active or not found', false);

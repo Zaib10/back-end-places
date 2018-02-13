@@ -31,7 +31,7 @@ const categories = [
         config: {
             auth: {
                 strategy: 'jwt',
-                scope: ['Admin']
+                scope: ['Admin', 'User']
             },
         },
         handler: Category.getAll

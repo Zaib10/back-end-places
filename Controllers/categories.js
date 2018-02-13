@@ -1,5 +1,5 @@
 const Category = require('../Models/Categories');
-const Places = require('../Models/Places');
+
 
 const controller = {};
 
@@ -41,11 +41,23 @@ controller.create = (request, reply) => {
 controller.update = (request, reply) => {
     const id = request.params.id;
     console.log(id, request.payload)
-    Category.findByIdAndUpdate(id, { $set: request.payload }, { new: true })
-        .then(a => {
-            reply(a).code(200)
-        })
-        .catch((err) => {
+    const title = request.payload.title;
+    Category.findOne({ title })
+    .then(isData=>{
+        console.log("dd>>>",isData)
+        if(!isData){
+          return  Category.findByIdAndUpdate({_id:id}, { $set: request.payload }, { new: true })
+           
+        }
+        else{
+            return Promise.reject({ isInternal: false, message: "Category  already exist" })
+        }
+    })
+    .then(data=>{
+       reply ({data}).code(200) 
+    })
+    .catch((err) => {
+            console.log(err)
             reply(err).code(500)
         })
 

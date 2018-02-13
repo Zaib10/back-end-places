@@ -3,12 +3,28 @@ const controller = {};
 
 controller.create = (request, reply) => {
     const payloadData = request.payload;
-    Places.create(payloadData)
-        .then(place => {
-            reply({
-                message: "Created place Successsfully"
-            }).code(200)
+    const address = payloadData.address;
+    console.log("adrs", address)
+    const logo = payloadData.logo;
+    Places.findOne({logo})
+    .then(placeInfo=>{
+        console.log("placeeeee", placeInfo)
+        if(!placeInfo){
+           return Places.create(payloadData)
+            
+        }
+        else{
+            return Promise.reject({ isInternal: false, message: "Place  already exist" })
+
+        }
+    })
+    .then(place=>{
+        reply ({
+            message: "Place created successfully",
+            place
         })
+    })
+    
         .catch(err => {
             console.log(err)
             reply(err).code(500)
@@ -61,6 +77,7 @@ controller.delete = (request, reply) => {
     const id = request.params.id
     Places.deleteOne({ _id: id })
         .then(place => {
+            console.log("place is here", place)
             reply({
                 message: "Deleted"
             }).code(200)
