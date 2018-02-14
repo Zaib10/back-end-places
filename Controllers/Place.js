@@ -11,11 +11,9 @@ controller.create = (request, reply) => {
             console.log("placeeeee", placeInfo)
             if (!placeInfo) {
                 return Places.create(payloadData)
-
             }
             else {
                 return Promise.reject({ isInternal: false, message: "Place  already exist" })
-
             }
         })
         .then(place => {
@@ -82,7 +80,7 @@ controller.getAll = (request, reply) => {
         skip = limit * (page - 1)
         limit = 3;
     }
-    
+
     Places.find(query)
         .limit(limit)
         .skip(skip)
