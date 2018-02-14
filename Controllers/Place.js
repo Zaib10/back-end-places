@@ -3,28 +3,28 @@ const controller = {};
 
 controller.create = (request, reply) => {
     const payloadData = request.payload;
-    const address = payloadData.address;
+    const address = payloadData;
     console.log("adrs", address)
     const logo = payloadData.logo;
-    Places.findOne({logo})
-    .then(placeInfo=>{
-        console.log("placeeeee", placeInfo)
-        if(!placeInfo){
-           return Places.create(payloadData)
-            
-        }
-        else{
-            return Promise.reject({ isInternal: false, message: "Place  already exist" })
+    Places.findOne({ logo })
+        .then(placeInfo => {
+            console.log("placeeeee", placeInfo)
+            if (!placeInfo) {
+                return Places.create(payloadData)
 
-        }
-    })
-    .then(place=>{
-        reply ({
-            message: "Place created successfully",
-            place
+            }
+            else {
+                return Promise.reject({ isInternal: false, message: "Place  already exist" })
+
+            }
         })
-    })
-    
+        .then(place => {
+            reply({
+                message: "Place created successfully",
+                place
+            })
+        })
+
         .catch(err => {
             console.log(err)
             reply(err).code(500)
@@ -48,8 +48,44 @@ controller.update = (request, reply) => {
 }
 
 controller.getAll = (request, reply) => {
-    Places.find({})
-    .populate('category')
+    console.log("qry", request.query)
+    const category = request.query.c;
+    const title = request.query.t;
+    var query = {};
+    if (category && title) {
+        query = {
+            category,
+            $or: [
+                { 'title': { $regex: new RegExp('^' + title, "ig") } }
+            ]
+        }
+    }
+    if (category) {
+        query = { category }
+    }
+    if (title) {
+        query = {
+            $or: [
+                { 'title': { $regex: new RegExp('^' + title, "ig") } }
+            ]
+        };
+    }
+    var limit = parseInt(request.query.l);
+    var page = request.query.p;
+    var limta = 1;
+    console.log()
+    console.log("limit",limita)
+    if (limit) {
+        limita += 1;
+    }
+    // else {
+    //     limta += limita
+    //     console.log("limta",limta)
+    // }
+    Places.find(query)
+        .limit(limita)
+        //.skip()
+        .populate('category')
         .then(places => {
             reply({ places }).code(200)
         })
