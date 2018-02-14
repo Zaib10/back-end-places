@@ -1,4 +1,4 @@
-const PlacesController = require('../Controllers/Places');
+const PlacesController = require('../Controllers/Place');
 
 const Places = [
     {

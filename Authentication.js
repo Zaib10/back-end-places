@@ -1,5 +1,5 @@
 
-const User = require('./Models/UserSchema');
+const User = require('./Models/User');
 var validate = function (decoded, req, callback) {
       
       

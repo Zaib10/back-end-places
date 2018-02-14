@@ -56,9 +56,9 @@ mongoose.Promise = require('bluebird');
         server.auth.default('jwt');
 
         //---Routes----
-        server.route(require('./Routes/UserRoutes'));
-        server.route(require('./Routes/categories'));
-        server.route(require('./Routes/Places'));
+        server.route(require('./Routes/User'));
+        server.route(require('./Routes/Category'));
+        server.route(require('./Routes/Place'));
 
     });
 //----END-----

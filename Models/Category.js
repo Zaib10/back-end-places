@@ -1,13 +1,14 @@
 const Mongoose = require('mongoose');
 
 var bcrypt = require('bcrypt');
+var slugify = require('slugify')
 
-const Categories = Mongoose.Schema({
+const Category = Mongoose.Schema({
     title: { type: String, required: true, trim: true, unique: true }, // Art and Fashion
-   // slug: { type: String, required: true, trim: true, unique: true }, // art-and-fashion
+   // slugify: { type: String, required: true, trim: true, unique: true }, // art-and-fashion
     details: { type: String, trim: true },
     //places: { type: Mongoose.Schema.Types.ObjectId, ref: 'places' },
 })
-const category = Mongoose.model('category', Categories, 'category');
+const category = Mongoose.model('category', Category, 'category');
 
 module.exports = category;

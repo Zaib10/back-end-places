@@ -1,6 +1,6 @@
 
 const Mongoose = require('mongoose');
-const placesSchema = Mongoose.Schema({
+const Place = Mongoose.Schema({
     title: { type: String, trim: true, required: true },
     address: { type: String, trim: true, required: true },
     images: { type: String, trim: true, required: true},
@@ -11,6 +11,6 @@ const placesSchema = Mongoose.Schema({
 
 }, { timestamps: true });
 
-const places = Mongoose.model('places', placesSchema, 'places');
+const places = Mongoose.model('places', Place, 'places');
 
 module.exports = places;

@@ -1,4 +1,4 @@
-const User = require('../Controllers/UserController');
+const User = require('../Controllers/User');
 
 const users = [
 

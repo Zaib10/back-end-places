@@ -1,4 +1,4 @@
-const Places = require('../Models/Places');
+const Places = require('../Models/Place');
 const controller = {};
 
 controller.create = (request, reply) => {

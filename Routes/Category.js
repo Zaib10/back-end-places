@@ -1,4 +1,4 @@
-const Category = require('../Controllers/categories')
+const Category = require('../Controllers/Category')
 const categories = [
     {
         method: "POST",
