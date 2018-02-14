@@ -72,19 +72,20 @@ controller.getAll = (request, reply) => {
     }
     var limit = parseInt(request.query.l);
     var page = request.query.p;
-    var limta = 1;
-    console.log()
-    console.log("limit",limita)
-    if (limit) {
-        limita += 1;
+    var skip;
+    //console.log(limit)
+    if (!limit) {
+        limit = 3;
+        skip = 0;
     }
-    // else {
-    //     limta += limita
-    //     console.log("limta",limta)
-    // }
+    else {
+        skip = limit * (page - 1)
+        limit = 3;
+    }
+    
     Places.find(query)
-        .limit(limita)
-        //.skip()
+        .limit(limit)
+        .skip(skip)
         .populate('category')
         .then(places => {
             reply({ places }).code(200)
