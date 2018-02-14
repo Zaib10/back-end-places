@@ -77,7 +77,7 @@ controller.delete = (request, reply) => {
     const id = request.params.id
     Places.deleteOne({ _id: id })
         .then(place => {
-            console.log("place is here", place)
+            console.log("place ", place)
             reply({
                 message: "Deleted"
             }).code(200)
