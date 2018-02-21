@@ -7,6 +7,7 @@ const Place = Mongoose.Schema({
     description: { type: String, trim: true, required: true },
     logo: { type: String, trim: true, required: true },
     category: { type: Mongoose.Schema.Types.ObjectId, ref: 'category' },
+    user : { type: Mongoose.Schema.Types.ObjectId, ref: 'user' },
     // createdBy: { type: Mongoose.Schema.Types.ObjectId, required: true, ref: 'user' },
 
 }, { timestamps: true });

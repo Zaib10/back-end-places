@@ -1,4 +1,6 @@
+const Joi = require('joi');
 const User = require('../Controllers/User');
+
 
 const users = [
 
@@ -6,20 +8,57 @@ const users = [
     {
         method: 'post',
         path: '/api/user/signup',
-        config: { auth: false },
+        config: {
+            auth: false ,
+            validate: {
+                payload: {
+                    firstName: Joi.string().required().max(6).min(3),
+                    lastName: Joi.string().required().max(6).min(3),
+                    email: Joi.string().email().required(),
+                    password: Joi.string().required().min(6)
+                    
+                }
+            }
+        },
+
         handler: User.signUp
     },
     //----User Login-----
     {
         method: 'post',
         path: '/api/user/login',
-        config: { auth: false },
+        config: {
+            auth: false ,
+            validate: {
+                payload: {
+                    email: Joi.string().email().required(),
+                    password: Joi.string().required().min(6)
+                    
+                }
+            }
+        },
         handler: User.login
     },
+    {
+        method: 'get',
+        path: '/api/user',
+        //config: { auth: false },
+        handler: User.getDataByToken
+    },
+
     //--Edit Information----
     {
         method: 'put',
         path: '/api/user/{id}',
+        config: {
+            validate: {
+                payload: {
+                    firstName: Joi.string().required().max(6).min(3),
+                    lastName: Joi.string().required().max(6).min(3)              
+                    
+                }
+            }
+        },
         handler: User.update
     },
 

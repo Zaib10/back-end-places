@@ -1,3 +1,4 @@
+const Joi = require('joi');
 const Category = require('../Controllers/Category')
 const categories = [
     {
@@ -9,6 +10,13 @@ const categories = [
                 strategy: 'jwt',
                 scope: ['Admin']
             },
+            validate: {
+                payload: {
+                    title: Joi.string().required().max(15).min(7),
+                    details: Joi.string().required().max(100).min(10)
+                    
+                }
+            }
         },
 
 
@@ -22,18 +30,27 @@ const categories = [
                 strategy: 'jwt',
                 scope: ['Admin']
             },
+            validate: {
+                payload: {
+                    title: Joi.string().required().max(15).min(7),
+                    details: Joi.string().required().max(100).min(10)
+                    
+                }
+            }
         },
         handler: Category.update
     },
     {
         method: "get",
         path: "/api/categories",
-        config: {
-            auth: {
-                strategy: 'jwt',
-                scope: ['Admin', 'User']
-            },
-        },
+         config: {
+            auth: false
+        //     // auth: {
+        //     //     strategy: 'jwt',
+        //     //     scope: ['Admin', 'User']
+        //     // },
+         },
+        
         handler: Category.getAll
     },
     {

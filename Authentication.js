@@ -1,7 +1,7 @@
 
 const User = require('./Models/User');
 var validate = function (decoded, req, callback) {
-      
+    req.activatedUserEmail= decoded.email;
       
     //find user by id (decoded._id)
     User

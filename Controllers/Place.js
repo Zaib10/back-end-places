@@ -48,23 +48,27 @@ controller.update = (request, reply) => {
 controller.getAll = (request, reply) => {
     console.log("qry", request.query)
     const category = request.query.c;
-    const title = request.query.t;
+    const q = request.query.q;
     var query = {};
-    if (category && title) {
+    if (category && q) {
         query = {
             category,
             $or: [
-                { 'title': { $regex: new RegExp('^' + title, "ig") } }
+                { 'title': { $regex: new RegExp('^' + q, "ig") } },
+                { 'address': { $regex: new RegExp('^' + q, "ig") } },
+                { 'description': { $regex: new RegExp('^' + q, "ig") } }
             ]
         }
     }
     if (category) {
         query = { category }
     }
-    if (title) {
+    if (q) {
         query = {
             $or: [
-                { 'title': { $regex: new RegExp('^' + title, "ig") } }
+                { 'title': { $regex: new RegExp('^' + q, "ig") } },
+                { 'address': { $regex: new RegExp('^' + q, "ig") } },
+                { 'description': { $regex: new RegExp('^' + q, "ig") } }
             ]
         };
     }
@@ -98,6 +102,20 @@ controller.get = (request, reply) => {
     const id = request.params.id;
     Places.findById({ _id: id })
         .populate('category')
+        .then(place => {
+            reply({
+                place
+            }).code(200)
+        })
+        .catch(err => {
+            reply(err)
+        })
+}
+// get all places of one user
+controller.getPlacesOfOneUser = (request, reply) => {
+    const user= request.params.id;
+    console.log("papi",user)
+    Places.find({user})
         .then(place => {
             reply({
                 place

@@ -15,7 +15,7 @@
     "hapi": "^16.5.0",
     "hapi-auth-jwt2": "^7.3.0",
     "hapi-pagination": "^2.0.0",
-    "joi": "^13.0.2",
+    "joi": "^13.1.2",
     "jsonwebtoken": "^8.1.0",
     "mongoose": "^4.13.7",
     "slugify": "^1.2.9"

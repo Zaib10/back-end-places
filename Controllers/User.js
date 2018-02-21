@@ -78,6 +78,19 @@ controller.login = (request, reply) => {
         })
 }
 
+// user get by token
+
+controller.getDataByToken = (request, reply) => {
+    const email = request.activatedUserEmail
+    User.findOne({ email }).select('firstName lastName email')
+        .then(data => {
+            reply(data)
+        })
+        .catch(err => {
+            reply("Error:", err)
+        })
+}
+
 //---Update User data----
 
 controller.update = (request, reply) => {
