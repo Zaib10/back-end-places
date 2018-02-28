@@ -8,7 +8,7 @@ controller.create = (request, reply) => {
     const logo = payloadData.logo;
     Places.findOne({ logo })
         .then(placeInfo => {
-            console.log("placeeeee", placeInfo)
+            console.log("place", placeInfo)
             if (!placeInfo) {
                 return Places.create(payloadData)
             }
