@@ -14,7 +14,7 @@ controller.create = (request, reply) => {
                 return Category.create(payloadData)
             }
             else {
-                return Promise.reject({ isInternal: false, message: "Category  already exist" })
+                return Promise.reject({ isInternal: false, message: "Category is already exist" })
 
             }
         })
@@ -50,7 +50,7 @@ controller.update = (request, reply) => {
            
         }
         else{
-            return Promise.reject({ isInternal: false, message: "Category  already exist" })
+            return Promise.reject({ isInternal: false, message: "Category is already exist" })
         }
     })
     .then(data=>{
