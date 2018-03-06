@@ -50,7 +50,7 @@ controller.update = (request, reply) => {
            
         }
         else{
-            return Promise.reject({ isInternal: false, message: "Category is already exist" })
+            return Promise.reject({ isInternal: false, message: "Category  already exist" })
         }
     })
     .then(data=>{
