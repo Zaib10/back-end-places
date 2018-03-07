@@ -77,12 +77,12 @@ controller.getAll = (request, reply) => {
     var skip;
     //console.log(limit)
     if (!limit) {
-        limit = 3;
+        limit = 10;
         skip = 0;
     }
     else {
         skip = limit * (page - 1)
-        limit = 3;
+        limit = 10;
     }
 
     Places.find(query)
