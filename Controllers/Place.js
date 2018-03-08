@@ -60,10 +60,10 @@ controller.getAll = (request, reply) => {
             ]
         }
     }
-    if (category) {
+    else if (category) {
         query = { category }
     }
-    if (q) {
+    else if (q) {
         query = {
             $or: [
                 { 'title': { $regex: new RegExp('^' + q, "ig") } },
@@ -113,9 +113,9 @@ controller.get = (request, reply) => {
 }
 // get all places of one user
 controller.getPlacesOfOneUser = (request, reply) => {
-    const user= request.params.id;
-    console.log("papi",user)
-    Places.find({user})
+    const user = request.params.id;
+    console.log("papi", user)
+    Places.find({ user })
         .then(place => {
             reply({
                 place

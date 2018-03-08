@@ -59,7 +59,8 @@ const Places = [
                     address: Joi.string().required().max(100).min(10),
                     images: Joi.string().required(),
                     description: Joi.string().required().min(5),
-                    logo: Joi.string().required()
+                    logo: Joi.string().required(),
+                    category : Joi.string().required()
                     
                 }
             }

@@ -87,7 +87,7 @@ controller.getDataByToken = (request, reply) => {
             reply(data)
         })
         .catch(err => {
-            reply("Error:", err)
+            reply(err)
         })
 }
 
