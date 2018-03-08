@@ -33,6 +33,7 @@ controller.update = (request, reply) => {
     const id = request.params.id;
     console.log(request.payload)
     Places.findByIdAndUpdate(id, { $set: request.payload }, { new: true })
+        .populate('category')
         .then(place => {
 
             reply({
