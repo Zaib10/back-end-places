@@ -4,7 +4,6 @@ const categories = [
     {
         method: "POST",
         path: "/api/categories",
-        //config: { auth: true },  
         config: {
             auth: {
                 strategy: 'jwt',
@@ -18,8 +17,6 @@ const categories = [
                 }
             }
         },
-
-
         handler: Category.create
     },
     {
@@ -45,12 +42,7 @@ const categories = [
         path: "/api/categories",
          config: {
             auth: false
-        //     // auth: {
-        //     //     strategy: 'jwt',
-        //     //     scope: ['Admin', 'User']
-        //     // },
          },
-        
         handler: Category.getAll
     },
     {
@@ -65,4 +57,5 @@ const categories = [
         handler: Category.getOne
     }
 ]
+
 module.exports = categories;

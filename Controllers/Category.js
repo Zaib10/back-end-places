@@ -1,6 +1,5 @@
 const Category = require('../Models/Category');
 
-
 const controller = {};
 
 //----create category-----
@@ -9,13 +8,12 @@ controller.create = (request, reply) => {
     const title = payloadData.title;
     Category.findOne({ title })
         .then(category => {
-            console.log("category: " , category)
+            //console.log("category: ", category)
             if (!category) {
                 return Category.create(payloadData)
             }
             else {
                 return Promise.reject({ isInternal: false, message: "Category  already exist" })
-
             }
         })
         .then(category => {
@@ -24,44 +22,55 @@ controller.create = (request, reply) => {
                 category
             })
         })
-
         .catch((err) => {
-            console.log('In Err: ', err)
+           // console.log('In Err: ', err)
             if (err && !err.isInternal) {
-                reply(err).code(400)
+                reply(
+                    ...err
+                ).code(400)
             } else {
-                console.log(err)
-                reply(err)
+                //console.log(err)
+                reply({
+                    message: "Internal Server error",
+                    err
+                }).code(500)
             }
         })
-
 }
 
 //----Update category------
 controller.update = (request, reply) => {
     const id = request.params.id;
-    console.log(id, request.payload)
+    //console.log(id, request.payload)
     const title = request.payload.title;
     Category.findOne({ title })
-    .then(isData=>{
-        console.log("dd>>>",isData)
-        if(!isData){
-          return  Category.findByIdAndUpdate({_id:id}, { $set: request.payload }, { new: true })
-           
-        }
-        else{
-            return Promise.reject({ isInternal: false, message: "Category  already exist" })
-        }
-    })
-    .then(data=>{
-       reply ({data}).code(200) 
-    })
-    .catch((err) => {
-            console.log(err)
-            reply(err).code(500)
+        .then(isCategory => {
+            if (!isCategory) {
+                return Category.findByIdAndUpdate({ _id: id }, { $set: request.payload }, { new: true })
+            }
+            else {
+                return Promise.reject({ isInternal: false, message: "Category  already exist" })
+            }
         })
-
-
+        .then(data => {
+            reply({
+                 data 
+                }).code(200)
+        })
+        .catch((err) => {
+            // console.log('In Err: ', err)
+             if (err && !err.isInternal) {
+                 reply(
+                     ...err
+                 ).code(400)
+             } else {
+                 //console.log(err)
+                 reply({
+                     message: "Internal Server error",
+                     err
+                 }).code(500)
+             }
+         })
 }
 
 //----Get all categories-----
@@ -73,11 +82,12 @@ controller.getAll = (request, reply) => {
             })
         })
         .catch((err) => {
-            console.log(err)
-            reply(err)
+            //console.log(err)
+            reply({
+                message: "Internal Server error",
+                err
+            }).code(500)
         })
-
-
 }
 
 //----get one category------
@@ -90,10 +100,11 @@ controller.getOne = (request, reply) => {
             }).code(200)
         })
         .catch((err) => {
-            reply(err).code(500)
+            reply({
+                message: "Internal Server error",
+                err
+            }).code(500)
         })
-
 }
-
 
 module.exports = controller;

@@ -5,6 +5,7 @@ const User = require('../Controllers/User');
 const users = [
 
     //----User Signup-----
+
     {
         method: 'post',
         path: '/api/user/signup',
@@ -12,7 +13,7 @@ const users = [
             auth: false ,
             validate: {
                 payload: {
-                    firstName: Joi.string().required().max(6).min(3),
+                    firstName: Joi.string().required(),
                     lastName: Joi.string().required().max(6).min(3),
                     email: Joi.string().email().required(),
                     password: Joi.string().required().min(6)
@@ -39,10 +40,10 @@ const users = [
         },
         handler: User.login
     },
+    //---User Authentication
     {
         method: 'get',
         path: '/api/user',
-        //config: { auth: false },
         handler: User.getDataByToken
     },
 

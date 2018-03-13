@@ -1,5 +1,5 @@
 const User = require('../Models/User');
-var Bcrypt = require('bcrypt');
+const Bcrypt = require('bcrypt');
 const jwt = require('jsonwebtoken');
 const Config = require('../Config'); //security key
 
@@ -27,38 +27,42 @@ controller.signUp = (request, reply) => {
                 user: user
             })
         }).catch((err) => {
-            console.log(err)
             if (err.type && err.type == 'USER_NOT_AVAILABLE') {
-                reply(err).code(409);
+                reply({
+                    ...err
+                }).code(409);
             } else {
-                reply(err).code(500)
+                reply({
+                    message: "Internal Server error",
+                    err
+                }).code(500)
             }
         })
 }
 
-//-----login-----
+//---login---
 
 controller.login = (request, reply) => {
     const email = request.payload.email;
     const password = request.payload.password;
     User.findOne({ 'email': email })
-        .then(userFind => {
-            if (!userFind) {
+        .then(userFound => {
+            if (!userFound) {
                 reply({
                     message: "Invalid Email",
                     login: false
                 }).code(401)
             }
-            else if (Bcrypt.compareSync(password, userFind.password)) {
-                let token = jwt.sign({ email: userFind.email, role : userFind.role, _id: userFind._id }, Config.jwt.securityCode, { algorithm: 'HS256' });
+            else if (Bcrypt.compareSync(password, userFound.password)) {
+                let token = jwt.sign({ email: userFound.email, role: userFound.role, _id: userFound._id }, Config.jwt.securityCode, { algorithm: 'HS256' });
                 reply(
                     {
                         data: {
-                            _id: userFind._id,
-                            firstName: userFind.firstName,
-                            lastName: userFind.lastName,
-                            email: userFind.email,
-                            role: userFind.role
+                            _id: userFound._id,
+                            firstName: userFound.firstName,
+                            lastName: userFound.lastName,
+                            email: userFound.email,
+                            role: userFound.role
                         },
                         token: token
                     }
@@ -73,35 +77,46 @@ controller.login = (request, reply) => {
         })
         .catch(err => {
             reply({
-                message: err
+                message: "Internal Server error",
+                err
             }).code(500)
         })
 }
 
-// user get by token
+//--- user get by token---
 
 controller.getDataByToken = (request, reply) => {
     const email = request.activatedUserEmail
     User.findOne({ email }).select('firstName lastName email')
-        .then(data => {
-            reply(data)
+        .then(user => {
+            reply(user)
         })
         .catch(err => {
-            reply(err)
+            reply({
+                message: "Internal Server error",
+                err
+            }).code(500)
         })
 }
 
-//---Update User data----
+//---Update User data---
 
-controller.update = (request, reply) => {
+controller.update = (request, reply) => { 
     const id = request.params.id;
-    console.log("email, role", request.currentUserEmail,request.role)
+
+    if (id !== request.userId) {
+        return reply({message: 'You are not authorized to access this resource'}).code(401)
+    }
+    
     User.findByIdAndUpdate({ _id: id }, { $set: request.payload }, { new: true }).select('firstName lastName email')
         .then(user => {
             reply(user)
         })
         .catch(err => {
-            reply(err).code(500)
+            reply({
+                message: "Internal Server error",
+                err
+            }).code(500)
         })
 }
 
