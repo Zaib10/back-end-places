@@ -102,10 +102,9 @@ controller.getAll = (request, reply) => {
             }).code(200)
         })
         .catch((err) => {
-            reply({
-                message: "Internal Server error",
-                err
-            }).code(500)
+            reply(
+                Boom.badImplementation('An internal server error occurred')
+            )
         })
 }
 
