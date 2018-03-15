@@ -7,14 +7,13 @@ const Places = [
         path: "/api/places",
             config: {
                 auth: {
-                    strategy: 'jwt',
                     scope: ['Admin', 'User']
                 },
                 validate: {
                     payload: {
                         title: Joi.string().required().max(15).min(7),
                         address: Joi.string().required().max(100).min(10),
-                        images: Joi.string().required(),
+                        // images: Joi.string().required(),
                         description: Joi.string().required().min(5),
                         logo: Joi.string().required(),
                         category: Joi.string().required(),
@@ -50,16 +49,16 @@ const Places = [
         path: "/api/places/{id}",
         config: {
             auth: {
-                strategy: 'jwt',
                 scope: ['Admin', 'User']
             },
             validate: {
                 payload: {
                     title: Joi.string().required().max(15).min(7),
                     address: Joi.string().required().max(100).min(10),
-                    images: Joi.string().required(),
+                  //  images: Joi.string().required(),
                     description: Joi.string().required().min(5),
-                    logo: Joi.string().required()
+                    logo: Joi.string().required(),
+                    category : Joi.string().required()
                     
                 }
             }
@@ -71,7 +70,6 @@ const Places = [
         path: "/api/places/{id}",
         config: {
             auth: {
-                strategy: 'jwt',
                 scope: ['Admin', 'User']
             },
         },

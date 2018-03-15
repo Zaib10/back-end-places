@@ -1,19 +1,21 @@
-const Places = require('../Models/Place');
+const Place = require('../Models/Place');
+const Boom = require('boom')
+
 const controller = {};
 
 controller.create = (request, reply) => {
     const payloadData = request.payload;
     const address = payloadData;
-    console.log("adrs", address)
     const logo = payloadData.logo;
-    Places.findOne({ logo })
-        .then(placeInfo => {
-            console.log("place", placeInfo)
-            if (!placeInfo) {
-                return Places.create(payloadData)
+
+
+    Place.findOne({ logo })
+        .then(place => {
+            if (!place) {
+                return Place.create(payloadData)
             }
             else {
-                return Promise.reject({ isInternal: false, message: "Place  already exist" })
+                return Promise.reject({ isInternal: false })
             }
         })
         .then(place => {
@@ -22,34 +24,41 @@ controller.create = (request, reply) => {
                 place
             })
         })
-
         .catch(err => {
-            console.log(err)
-            reply(err).code(500)
+            if (err && !err.isInternal) {
+                reply(
+                    Boom.conflict('Place  already exist')
+                )
+            } else {
+                reply(
+                    Boom.badImplementation('An internal server error occurred')
+                )
+            }
         })
-}
 
+}
 controller.update = (request, reply) => {
     const id = request.params.id;
-    console.log(request.payload)
-    Places.findByIdAndUpdate(id, { $set: request.payload }, { new: true })
+    Place.findByIdAndUpdate(id, { $set: request.payload }, { new: true })
+        .populate('category')
         .then(place => {
-
             reply({
                 message: "Place Updated Syuccessfully",
                 place
             }).code(200)
         })
         .catch(err => {
-            reply(err).code(500)
+            reply(
+                Boom.badImplementation('An internal server error occurred')
+            )
         })
 }
 
 controller.getAll = (request, reply) => {
-    console.log("qry", request.query)
+    console.log("query ", request.query)
     const category = request.query.c;
     const q = request.query.q;
-    var query = {};
+    let query = {};
     if (category && q) {
         query = {
             category,
@@ -60,10 +69,10 @@ controller.getAll = (request, reply) => {
             ]
         }
     }
-    if (category) {
+    else if (category) {
         query = { category }
     }
-    if (q) {
+    else if (q) {
         query = {
             $or: [
                 { 'title': { $regex: new RegExp('^' + q, "ig") } },
@@ -75,32 +84,36 @@ controller.getAll = (request, reply) => {
     var limit = parseInt(request.query.l);
     var page = request.query.p;
     var skip;
-    //console.log(limit)
     if (!limit) {
-        limit = 3;
+        limit = 10;
         skip = 0;
     }
     else {
         skip = limit * (page - 1)
-        limit = 3;
+        limit = 10;
     }
-
-    Places.find(query)
+    Place.find(query)
         .limit(limit)
         .skip(skip)
         .populate('category')
-        .then(places => {
-            reply({ places }).code(200)
+        .then(place => {
+            reply({
+                place
+            }).code(200)
         })
         .catch((err) => {
-            reply(err).code(500)
+            reply({
+                message: "Internal Server error",
+                err
+            }).code(500)
         })
-
 }
 
 controller.get = (request, reply) => {
-    const id = request.params.id;
-    Places.findById({ _id: id })
+    // console.log("query", request.query.t)
+    // const query = request.query.t
+    const id = request.params.id
+    Place.findById({_id: id})
         .populate('category')
         .then(place => {
             reply({
@@ -108,37 +121,39 @@ controller.get = (request, reply) => {
             }).code(200)
         })
         .catch(err => {
-            reply(err)
+            reply(
+                Boom.badImplementation('An internal server error occurred')
+            )
         })
 }
 // get all places of one user
 controller.getPlacesOfOneUser = (request, reply) => {
-    const user= request.params.id;
-    console.log("papi",user)
-    Places.find({user})
+    const user = request.params.id;
+    Place.find({ user })
         .then(place => {
             reply({
                 place
             }).code(200)
         })
         .catch(err => {
-            reply(err)
+            reply(
+                Boom.badImplementation('An internal server error occurred')
+            )
         })
 }
 
 controller.delete = (request, reply) => {
     const id = request.params.id
-    Places.deleteOne({ _id: id })
+    Place.deleteOne({ _id: id })
         .then(place => {
-            console.log("place ", place)
             reply({
                 message: "Deleted"
             }).code(200)
         })
         .catch(err => {
-            console.log(err)
-            reply(err).code(500)
+            reply(
+                Boom.badImplementation('An internal server error occurred')
+            )
         })
-
 }
 module.exports = controller;

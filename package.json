@@ -12,12 +12,14 @@
   "dependencies": {
     "bcrypt": "^1.0.3",
     "bluebird": "^3.5.1",
+    "boom": "^7.2.0",
     "hapi": "^16.5.0",
     "hapi-auth-jwt2": "^7.3.0",
     "hapi-pagination": "^2.0.0",
     "joi": "^13.1.2",
     "jsonwebtoken": "^8.1.0",
     "mongoose": "^4.13.7",
+    "mongoose-slug-generator": "^1.0.4",
     "slugify": "^1.2.9"
   }
 }

@@ -4,10 +4,8 @@ const categories = [
     {
         method: "POST",
         path: "/api/categories",
-        //config: { auth: true },  
         config: {
             auth: {
-                strategy: 'jwt',
                 scope: ['Admin']
             },
             validate: {
@@ -18,8 +16,6 @@ const categories = [
                 }
             }
         },
-
-
         handler: Category.create
     },
     {
@@ -27,7 +23,6 @@ const categories = [
         path: "/api/categories/{id}",
         config: {
             auth: {
-                strategy: 'jwt',
                 scope: ['Admin']
             },
             validate: {
@@ -45,12 +40,7 @@ const categories = [
         path: "/api/categories",
          config: {
             auth: false
-        //     // auth: {
-        //     //     strategy: 'jwt',
-        //     //     scope: ['Admin', 'User']
-        //     // },
          },
-        
         handler: Category.getAll
     },
     {
@@ -58,11 +48,11 @@ const categories = [
         path: "/api/categories/{id}",
         config: {
             auth: {
-                strategy: 'jwt',
                 scope: ['Admin']
             },
         },
         handler: Category.getOne
     }
 ]
+
 module.exports = categories;
