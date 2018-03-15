@@ -6,7 +6,6 @@ const categories = [
         path: "/api/categories",
         config: {
             auth: {
-                strategy: 'jwt',
                 scope: ['Admin']
             },
             validate: {
@@ -24,7 +23,6 @@ const categories = [
         path: "/api/categories/{id}",
         config: {
             auth: {
-                strategy: 'jwt',
                 scope: ['Admin']
             },
             validate: {
@@ -50,7 +48,6 @@ const categories = [
         path: "/api/categories/{id}",
         config: {
             auth: {
-                strategy: 'jwt',
                 scope: ['Admin']
             },
         },

@@ -18,7 +18,7 @@ controller.signUp = (request, reply) => {
                 return User.create(payloadData);
             } else {
                 // user email not avaialble
-                return Promise.reject({ type: "USER_NOT_AVAILABLE", message: "User email already exists;" })
+                return Promise.reject({ type: "USER_NOT_AVAILABLE", message: "User email already exists" })
             }
         })
         .then(user => {
