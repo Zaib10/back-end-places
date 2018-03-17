@@ -109,7 +109,7 @@ controller.getAll = (request, reply) => {
 controller.get = (request, reply) => {
     const id = request.params.id;
     Place.findById({ _id: id })
-        .populate('category')
+        //.populate('category')
         .then(place => {
             reply({
                 place
