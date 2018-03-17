@@ -109,10 +109,8 @@ controller.getAll = (request, reply) => {
 }
 
 controller.get = (request, reply) => {
-    // console.log("query", request.query.t)
-    // const query = request.query.t
-    const id = request.params.id
-    Place.findById({_id: id})
+    const id = request.params.id;
+    Place.findById({ _id: id })
         //.populate('category')
         .then(place => {
             reply({
