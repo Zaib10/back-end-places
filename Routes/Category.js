@@ -10,8 +10,8 @@ const categories = [
             },
             validate: {
                 payload: {
-                    title: Joi.string().required().max(15).min(7),
-                    details: Joi.string().required().max(100).min(10)
+                    title: Joi.string().required().max(100),
+                    details: Joi.string().required().max(1000)
                     
                 }
             }

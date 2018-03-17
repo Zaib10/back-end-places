@@ -11,8 +11,8 @@ const Places = [
                 },
                 validate: {
                     payload: {
-                        title: Joi.string().required().max(15).min(7),
-                        address: Joi.string().required().max(100).min(10),
+                        title: Joi.string().required().max(150).min(5),
+                        address: Joi.string().required().max(1000).min(10),
                         // images: Joi.string().required(),
                         description: Joi.string().required().min(5),
                         logo: Joi.string().required(),
@@ -53,8 +53,8 @@ const Places = [
             },
             validate: {
                 payload: {
-                    title: Joi.string().required().max(15).min(7),
-                    address: Joi.string().required().max(100).min(10),
+                    title: Joi.string().required().max(150).min(7),
+                    address: Joi.string().required().max(500).min(10),
                   //  images: Joi.string().required(),
                     description: Joi.string().required().min(5),
                     logo: Joi.string().required(),

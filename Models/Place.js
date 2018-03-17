@@ -4,7 +4,7 @@ var slug = require('mongoose-slug-generator');
 Mongoose.plugin(slug)
 const PlaceSchema = Mongoose.Schema({
     title: { type: String, trim: true, required: true },
-    slug: { type: String, slug: "title" },
+    slug: { type: String, slug: "title", unique: true },
     address: { type: String, trim: true, required: true },
     status: { type: String, default: "Pending", enum: ["Pending", "Active"] },
     //images: { type: String, trim: true, required: true},
