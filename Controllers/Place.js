@@ -40,7 +40,7 @@ controller.create = (request, reply) => {
 controller.update = (request, reply) => {
     const id = request.params.id;
     Place.findByIdAndUpdate(id, { $set: request.payload }, { new: true })
-        .populate('category')
+        //.populate('category')
         .then(place => {
             reply({
                 message: "Place Updated Syuccessfully",
@@ -113,7 +113,7 @@ controller.get = (request, reply) => {
     // const query = request.query.t
     const id = request.params.id
     Place.findById({_id: id})
-        .populate('category')
+        //.populate('category')
         .then(place => {
             reply({
                 place

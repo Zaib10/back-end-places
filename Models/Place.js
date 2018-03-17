@@ -6,6 +6,7 @@ const PlaceSchema = Mongoose.Schema({
     title: { type: String, trim: true, required: true },
     slug: { type: String, slug: "title" },
     address: { type: String, trim: true, required: true },
+    status: { type: String, default: "Pending", enum: ["Pending", "Active"] },
     //images: { type: String, trim: true, required: true},
     description: { type: String, trim: true, required: true },
     logo: { type: String, trim: true, required: true },
