@@ -16,6 +16,8 @@ const Places = [
                         // images: Joi.string().required(),
                         description: Joi.string().required().min(5),
                         logo: Joi.string().required(),
+                        lat : Joi.number().required(),
+                        lng: Joi.number().required(),
                         category: Joi.string().required(),
                         user: Joi.string().required()
                         
@@ -58,6 +60,8 @@ const Places = [
                   //  images: Joi.string().required(),
                     description: Joi.string().required().min(5),
                     logo: Joi.string().required(),
+                    lat : Joi.number().required(),
+                    lng: Joi.number().required(),
                     category : Joi.string().required()
                     
                 }

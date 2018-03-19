@@ -10,6 +10,8 @@ const PlaceSchema = Mongoose.Schema({
     //images: { type: String, trim: true, required: true},
     description: { type: String, trim: true, required: true },
     logo: { type: String, trim: true, required: true },
+    lat : { type: Number, trim: true, required: true },
+    lng : { type: Number, trim: true, required: true },
     category: { type: Mongoose.Schema.Types.ObjectId, ref: 'category' },
     user : { type: Mongoose.Schema.Types.ObjectId, ref: 'user' },
 
