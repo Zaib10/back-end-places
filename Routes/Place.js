@@ -5,26 +5,28 @@ const Places = [
     {
         method: "POST",
         path: "/api/places",
-            config: {
-                auth: {
-                    scope: ['Admin', 'User']
-                },
-                validate: {
-                    payload: {
-                        title: Joi.string().required().max(150).min(5),
-                        address: Joi.string().required().max(1000).min(10),
-                        // images: Joi.string().required(),
-                        description: Joi.string().required().min(5),
-                        logo: Joi.string().required(),
-                        lat : Joi.number().required(),
-                        lng: Joi.number().required(),
-                        category: Joi.string().required(),
-                        user: Joi.string().required()
-                        
-                    }
-                }
+        config: {
+            auth: {
+                scope: ['Admin', 'User']
             },
-        
+            validate: {
+                payload: {
+                    title: Joi.string().required().max(150).min(5),
+                    address: Joi.string().required().max(1000).min(10),
+                    // images: Joi.string().required(),
+                    description: Joi.string().required().min(5),
+                    logo: Joi.string().required(),
+                    location: {
+                        lat: Joi.number().required(),
+                        lng: Joi.number().required()
+                    },
+                    category: Joi.string().required(),
+                    user: Joi.string().required()
+
+                }
+            }
+        },
+
         handler: PlacesController.create
     },
     {
@@ -57,13 +59,15 @@ const Places = [
                 payload: {
                     title: Joi.string().required().max(150).min(7),
                     address: Joi.string().required().max(500).min(10),
-                  //  images: Joi.string().required(),
+                    //  images: Joi.string().required(),
                     description: Joi.string().required().min(5),
                     logo: Joi.string().required(),
-                    lat : Joi.number().required(),
-                    lng: Joi.number().required(),
-                    category : Joi.string().required()
-                    
+                    location: {
+                        lat: Joi.number().required(),
+                        lng: Joi.number().required()
+                    },
+                    category: Joi.string().required()
+
                 }
             }
         },
