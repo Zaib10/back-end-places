@@ -3,6 +3,7 @@ const Bcrypt = require('bcrypt');
 const jwt = require('jsonwebtoken');
 const Config = require('../Config'); //security key
 const Boom = require('boom')
+const fs = require("fs");
 
 const controller = {};
 
@@ -120,5 +121,23 @@ controller.update = (request, reply) => {
         })
 }
 
+//---image upload---
+
+controller.image = (request, reply) => {
+    //    console.log("pa", request.payload["file"],request.payload["file"].hapi.filename)
+    var result = [];
+
+    result.push(request.payload["file"].hapi);
+    request.payload["file"].pipe(fs.createWriteStream(__dirname + "/Uploads/" + request.payload["file"].hapi.filename))
+
+    reply(result);
+}
+//---get image---
+
+controller.getImage = (request, response) => {
+    var data = request.payload;
+    console.log("re", data)
+   
+}
 
 module.exports = controller;

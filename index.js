@@ -6,6 +6,9 @@ const server = new Hapi.Server();
 const Config = require("./Config");
 const jwt = require("jsonwebtoken");
 const validate = require("./Authentication");
+
+const fs = require("fs");
+
 // ---Server Connection-----
 server.connection({
 	port: "2002",

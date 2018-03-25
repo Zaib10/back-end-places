@@ -1,5 +1,6 @@
 const Joi = require('joi');
 const User = require('../Controllers/User');
+const fs = require("fs");
 
 
 const users = [
@@ -62,8 +63,36 @@ const users = [
         },
         handler: User.update
     },
+     //--upload image----
+     {
+        method: "POST",
+        path: "/api/image/upload",
+        config: {
+            auth :false,
+            payload: {
+                output: "stream",
+                parse: true,
+                allow: "multipart/form-data",
+                maxBytes: 2 * 1000 * 1000
+            }
+        },
+       
+        handler: User.image
+    },
+     //--get image----
+     {
+        method: "get",
+        path: "/api/image",
+        config: {
+            auth :false,
+        },
+       
+        handler: User.getImage
+    },
+
 
 ];
+
 
 module.exports = users;
 
