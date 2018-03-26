@@ -44,7 +44,6 @@ controller.update = (request, reply) => {
     let { title, address } = request.payload;
     
     let qry = { title, address, _id : {$ne: id }};
-    console.log("hyyyy", qry)
     Place.findOne(qry)
         .then(place => {
             if (!place) {
