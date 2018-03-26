@@ -112,7 +112,7 @@ controller.update = (request, reply) => {
         )
     }
 
-    User.findByIdAndUpdate({ _id: id }, { $set: request.payload }, { new: true }).select('firstName lastName email')
+    User.findByIdAndUpdate({ _id: id }, { $set: request.payload }, { new: true }).select('firstName lastName email profilePicture')
         .then(user => {
             reply(user)
         })
@@ -126,7 +126,10 @@ controller.update = (request, reply) => {
 
 controller.uploadImage = (request, reply) => {
     const data = request.payload;
+    console.log("b data",data)
     let imageType = data.file.hapi.headers['content-type']
+    console.log("b data",imageType)
+
     const id = request.params.id;
     let name = '';
     console.log("id",id , request.userId)
@@ -157,6 +160,8 @@ controller.uploadImage = (request, reply) => {
         data.file.pipe(file);
         User.findByIdAndUpdate(id, { $set: { profilePicture: name } })
             .then(data => {
+                console.log("data", data)
+
                 reply(data)
             })
             .catch(err => {
