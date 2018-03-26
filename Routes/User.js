@@ -68,7 +68,6 @@ const users = [
         method: "POST",
         path: "/api/user/uploads/{id}",
         config: {
-            auth :false,
             payload: {
                 output: "stream",
                 parse: true,

@@ -129,7 +129,7 @@ controller.uploadImage = (request, reply) => {
     let imageType = data.file.hapi.headers['content-type']
     const id = request.params.id;
     let name = '';
-
+    console.log("id",id , request.userId)
     if (id !== request.userId) {
         return reply(
             Boom.unauthorized('You are not authorized to access this resource')
