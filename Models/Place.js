@@ -14,6 +14,7 @@ const PlaceSchema = Mongoose.Schema({
         lat: { type: Number, trim: true, required: true },
         lng: { type: Number, trim: true, required: true },
     },
+    placeImage : { type : String },
     category: { type: Mongoose.Schema.Types.ObjectId, ref: 'category' },
     user: { type: Mongoose.Schema.Types.ObjectId, ref: 'user' },
 

@@ -1,6 +1,8 @@
 const Place = require('../Models/Place');
 const Category = require('../Models/Category');
 const Boom = require('boom')
+const fs = require('fs');
+const Path = require('path')
 
 const controller = {};
 
@@ -173,6 +175,56 @@ controller.getPlacesOfOneUser = (request, reply) => {
                 Boom.badImplementation('An internal server error occurred')
             )
         })
+}
+
+controller.placeImage = (request, reply) => {
+    const data = request.payload;
+    console.log("data", data)
+    let imageType = data.file.hapi.headers['content-type']
+    const id = request.params.id;
+    let name = '';
+    console.log("id", request.params)
+    // if (id !== request.userId) {
+    //     return reply(
+    //         Boom.unauthorized('You are not authorized to access this resource')
+    //     )
+    // }
+    if (imageType == 'image/jpeg') {
+        name = id + '.jpeg';
+    }
+    else if (imageType == 'image/jpg') {
+        name = id + '.jpg';
+    }
+    else if (imageType == 'image/png') {
+        name = id + '.png';
+
+    }
+    
+    if (data.file && name) {
+        let path_ = Path.resolve(__dirname, '../../react-place-front-end/public', "places");
+        let file = fs.createWriteStream(`${path_}/${name}`);
+
+        file.on('error', function (err) {
+            console.error(err)
+        });
+
+        data.file.pipe(file);
+        console.log("name")
+
+        console.log("name", id, name)
+
+        Place.findByIdAndUpdate( id, { $set: { placeImage: name } })
+            .then(qw => {
+                console.log("name")
+
+                console.log("name", qw)
+
+                reply(qw)
+            })
+            .catch(err => {
+                reply(err)
+            })
+    }
 }
 
 controller.delete = (request, reply) => {

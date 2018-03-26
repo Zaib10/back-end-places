@@ -82,6 +82,22 @@ const Places = [
             },
         },
         handler: PlacesController.delete
+    },
+    {
+        method: "POST",
+        path: "/api/place/uploads/{id}",
+        config: {
+            auth: false,
+            payload: {
+                
+                output: "stream",
+                parse: true,
+                allow: "multipart/form-data",
+                maxBytes: 2 * 1000 * 1000
+            }
+        },
+       
+        handler: PlacesController.placeImage
     }
 ]
 module.exports = Places;
