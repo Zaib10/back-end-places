@@ -3,7 +3,9 @@ const Bcrypt = require('bcrypt');
 const jwt = require('jsonwebtoken');
 const Config = require('../Config'); //security key
 const Boom = require('boom')
-const fs = require("fs");
+const fs = require('fs');
+const Path = require('path')
+
 
 const controller = {};
 
@@ -88,7 +90,7 @@ controller.login = (request, reply) => {
 
 controller.getDataByToken = (request, reply) => {
     const email = request.activatedUserEmail
-    User.findOne({ email }).select('firstName lastName email')
+    User.findOne({ email }).select('firstName lastName email profilePicture')
         .then(user => {
             reply(user)
         })
@@ -120,24 +122,48 @@ controller.update = (request, reply) => {
             )
         })
 }
+//---Upload images---
 
-//---image upload---
+controller.uploadImage = (request, reply) => {
+    const data = request.payload;
+    let imageType = data.file.hapi.headers['content-type']
+    const id = request.params.id;
+    let name = '';
 
-controller.image = (request, reply) => {
-    //    console.log("pa", request.payload["file"],request.payload["file"].hapi.filename)
-    var result = [];
+    if (id !== request.userId) {
+        return reply(
+            Boom.unauthorized('You are not authorized to access this resource')
+        )
+    }
+    if (imageType == 'image/jpeg') {
+        name = id + '.jpeg';
+    }
+    else if (imageType == 'image/jpg') {
+        name = id + '.jpg';
+    }
+    else if (imageType == 'image/png') {
+        name = id + '.png';
 
-    result.push(request.payload["file"].hapi);
-    request.payload["file"].pipe(fs.createWriteStream(__dirname + "/Uploads/" + request.payload["file"].hapi.filename))
+    }
+    if (data.file && name) {
 
-    reply(result);
+        let path_ = Path.resolve(__dirname, '../../react-place-front-end/public', "users");
+        let file = fs.createWriteStream(`${path_}/${name}`);
+
+        file.on('error', function (err) {
+            console.error(err)
+        });
+
+        data.file.pipe(file);
+        User.findByIdAndUpdate(id, { $set: { profilePicture: name } })
+            .then(data => {
+                reply(data)
+            })
+            .catch(err => {
+                reply(err)
+            })
+    }
 }
-//---get image---
 
-controller.getImage = (request, response) => {
-    var data = request.payload;
-    console.log("re", data)
-   
-}
 
 module.exports = controller;

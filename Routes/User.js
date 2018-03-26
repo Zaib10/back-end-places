@@ -66,7 +66,7 @@ const users = [
      //--upload image----
      {
         method: "POST",
-        path: "/api/image/upload",
+        path: "/api/user/uploads/{id}",
         config: {
             auth :false,
             payload: {
@@ -77,19 +77,8 @@ const users = [
             }
         },
        
-        handler: User.image
-    },
-     //--get image----
-     {
-        method: "get",
-        path: "/api/image",
-        config: {
-            auth :false,
-        },
-       
-        handler: User.getImage
-    },
-
+        handler: User.uploadImage
+    }
 
 ];
 
