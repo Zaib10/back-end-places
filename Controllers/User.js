@@ -122,7 +122,7 @@ controller.update = (request, reply) => {
             )
         })
 }
-//---Upload images---
+//---Upload user profile images---
 
 controller.uploadImage = (request, reply) => {
     const data = request.payload;
@@ -160,12 +160,6 @@ controller.uploadImage = (request, reply) => {
         data.file.pipe(file);
         User.findByIdAndUpdate(id, { $set: { profilePicture: name } })
             .then(data => {
-<<<<<<< HEAD
-                console.log("user data", data)
-=======
-                console.log("data", data)
-
->>>>>>> 070c799a5e1f2340bb4e03b739621179a9ebee92
                 reply(data)
             })
             .catch(err => {
