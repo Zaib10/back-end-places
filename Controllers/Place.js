@@ -178,51 +178,79 @@ controller.getPlacesOfOneUser = (request, reply) => {
 
 controller.placeImage = (request, reply) => {
     const data = request.payload;
-    console.log("data", data)
-    let imageType = data.file.hapi.headers['content-type']
+    // console.log("data", data)
+    
     const id = request.params.id;
-    let name = '';
+    let name = `${id}.png`;
+    
     console.log("id", request.params)
     // if (id !== request.userId) {
     //     return reply(
     //         Boom.unauthorized('You are not authorized to access this resource')
     //     )
     // }
-    if (imageType == 'image/jpeg') {
-        name = id + '.jpeg';
-    }
-    else if (imageType == 'image/jpg') {
-        name = id + '.jpg';
-    }
-    else if (imageType == 'image/png') {
-        name = id + '.png';
 
-    }
+    // findPlage
+
+    if (data.file) {
+        Place.findById(id)
+            .then(place => {
+                if (place) {
+                    // upload image
+
+                    let imageType = data.file.hapi.headers['content-type'];
+
+                    if (imageType == 'image/jpeg') {
+                        name = id + '.jpeg';
+                    }
+                    else if (imageType == 'image/jpg') {
+                        name = id + '.jpg';
+                    }
+                    else if (imageType == 'image/png') {
+                        name = id + '.png';
+                
+                    }
+            
+            
+                    let path_ = Path.resolve(__dirname, '../../react-place-front-end/public', "places");
+                    let file = fs.createWriteStream(`${path_}/${name}`);
+            
+                    file.on('error', function (err) {
+                        console.error(err)
+                    });
+
+                    data.file.pipe(file);
+
+                    place.placeImage = name;
+                    place
+                        .save(data => {
+                            reply({status: 'ok', place})
+                        }).catch(err => {
+                            reply(Boom.badImplementation())
+                        })
+                }
+                else {
+                    reply(Boom.notFound('Place not found'))
+                }
+            })
     
-    if (data.file && name) {
-        let path_ = Path.resolve(__dirname, '../../react-place-front-end/public', "places");
-        let file = fs.createWriteStream(`${path_}/${name}`);
+    
+  
+       
 
-        file.on('error', function (err) {
-            console.error(err)
-        });
+        // console.log(" id and name", id, name)
 
-        data.file.pipe(file);
-        console.log("name")
+        // Place.findByIdAndUpdate( id, { $set: { placeImage: name } })
+        //     .then(resp => {
+        //         console.log("resp",resp)
 
-        console.log("name", id, name)
-
-        Place.findByIdAndUpdate( id, { $set: { placeImage: name } })
-            .then(qw => {
-                console.log("name")
-
-                console.log("name", qw)
-
-                reply(qw)
-            })
-            .catch(err => {
-                reply(err)
-            })
+        //         reply(resp)
+        //     })
+        //     .catch(err => {
+        //         reply(err)
+            // })
+    } else {
+        reply(Boom.badData('Image not found'));
     }
 }
 
